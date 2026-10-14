@@ -4,32 +4,64 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Mobile Menu Toggle
+  // 1. Mobile Menu Toggle & Drawer
   const mobileToggle = document.querySelector('.mobile-toggle');
   const navMenu = document.querySelector('.nav-menu');
 
   if (mobileToggle && navMenu) {
-    mobileToggle.addEventListener('click', () => {
-      const isExpanded = mobileToggle.getAttribute('aria-expanded') === 'true';
-      mobileToggle.setAttribute('aria-expanded', !isExpanded);
-      mobileToggle.classList.toggle('active');
-      navMenu.classList.toggle('active');
+    // Add mobile CTA button inside menu if not present
+    if (!navMenu.querySelector('.mobile-menu-cta')) {
+      const ctaLi = document.createElement('li');
+      ctaLi.className = 'mobile-menu-cta';
+      ctaLi.innerHTML = `
+        <a href="contact.html" class="btn btn-primary" style="width: 100%; text-align: center;">Get a Quote</a>
+        <a href="tel:0550545381" class="btn btn-outline-white" style="width: 100%; text-align: center; font-size: 0.875rem;">Call: 0550545381</a>
+      `;
+      navMenu.appendChild(ctaLi);
+    }
+
+    const closeMobileMenu = () => {
+      mobileToggle.classList.remove('active');
+      navMenu.classList.remove('active');
+      mobileToggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+
+    const toggleMobileMenu = () => {
+      const isOpen = navMenu.classList.contains('active');
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        mobileToggle.classList.add('active');
+        navMenu.classList.add('active');
+        mobileToggle.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+    };
+
+    mobileToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMobileMenu();
     });
 
-    // Close menu when clicking outside or clicking any nav link
+    // Close menu when clicking outside
     document.addEventListener('click', (e) => {
-      if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('active')) {
-        navMenu.classList.remove('active');
-        mobileToggle.classList.remove('active');
-        mobileToggle.setAttribute('aria-expanded', 'false');
+      if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !mobileToggle.contains(e.target)) {
+        closeMobileMenu();
       }
     });
 
-    navMenu.querySelectorAll('.nav-link').forEach(link => {
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+        closeMobileMenu();
+      }
+    });
+
+    // Close when clicking any nav link
+    navMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
-        navMenu.classList.remove('active');
-        mobileToggle.classList.remove('active');
-        mobileToggle.setAttribute('aria-expanded', 'false');
+        closeMobileMenu();
       });
     });
   }
@@ -154,6 +186,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
       contactForm.reset();
     });
+  }
+
+  // 6. Pre-select service from URL query parameter (e.g., contact.html?service=Custom%20Software)
+  const urlParams = new URLSearchParams(window.location.search);
+  const serviceParam = urlParams.get('service');
+  const serviceSelect = document.getElementById('service');
+  if (serviceParam && serviceSelect) {
+    for (let i = 0; i < serviceSelect.options.length; i++) {
+      const optText = serviceSelect.options[i].text.toLowerCase();
+      const optVal = serviceSelect.options[i].value.toLowerCase();
+      const searchParam = serviceParam.toLowerCase();
+      if (optText.includes(searchParam) || optVal.includes(searchParam) || searchParam.includes(optVal)) {
+        serviceSelect.selectedIndex = i;
+        break;
+      }
+    }
+    // Scroll to form smoothly on mobile and desktop
+    const formCard = document.querySelector('.form-card');
+    if (formCard) {
+      setTimeout(() => {
+        formCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 200);
+    }
   }
 
   function escapeHtml(string) {

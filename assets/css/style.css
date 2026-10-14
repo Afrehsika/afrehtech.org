@@ -1426,107 +1426,329 @@ textarea.form-control {
 /* ===================================================================
    Responsive Design (Tablets & Mobile)
    =================================================================== */
+/* ===================================================================
+   Responsive Design System (Tablets, Android Phones, Small Devices)
+   =================================================================== */
+
+/* Tablet & Smaller Laptops (1024px) */
 @media (max-width: 1024px) {
   .hero-grid,
   .spotlight-grid,
   .contact-grid {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.75rem;
   }
 
   .grid-3 {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 
   .grid-4 {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
   }
 
   .footer-grid {
     grid-template-columns: 1fr 1fr;
     gap: 2.5rem;
   }
+
+  .spotlight-visual {
+    order: 2;
+  }
+  .spotlight-content {
+    order: 1;
+  }
 }
 
+/* Tablets & Mobile Devices (768px) */
 @media (max-width: 768px) {
+  /* Layout Spacing */
+  .section {
+    padding: 3.75rem 0;
+  }
+
+  .container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  /* Header & Mobile Drawer */
   .site-header {
-    height: 72px;
+    height: 70px;
   }
 
   .nav-container {
-    height: 72px;
+    height: 70px;
   }
 
   .mobile-toggle {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .nav-menu {
     position: fixed;
-    top: 72px;
+    top: 70px;
     left: 0;
     right: 0;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
     background: #0B1220;
     flex-direction: column;
-    align-items: flex-start;
-    padding: 2rem 1.5rem;
-    gap: 1.25rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transform: translateY(-120%);
+    align-items: stretch;
+    padding: 1.75rem 1.25rem 2.5rem;
+    gap: 0.5rem;
+    border-bottom: 2px solid var(--royal-blue);
+    transform: translateY(-110%);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
-    transition: all 0.35s ease;
-    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0.3s;
+    box-shadow: 0 25px 40px rgba(0, 0, 0, 0.7);
+    z-index: 999;
   }
 
   .nav-menu.active {
     transform: translateY(0);
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
+  }
+
+  .nav-menu li {
+    width: 100%;
   }
 
   .nav-link {
     font-size: 1.1rem;
+    font-weight: 600;
+    display: block;
     width: 100%;
-    padding: 0.5rem 0;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid transparent;
+    transition: all var(--transition-fast);
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    background: rgba(37, 99, 235, 0.15);
+    color: #FFFFFF;
+    border-left-color: var(--accent-cyan);
+    padding-left: 1.25rem;
+  }
+
+  .nav-link.active::after {
+    display: none;
+  }
+
+  /* Mobile CTA in menu */
+  .mobile-menu-cta {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .nav-cta {
     display: none;
   }
 
+  /* Typography & Titles */
+  .section-title {
+    font-size: clamp(1.65rem, 5vw, 2.25rem);
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+  }
+
+  .hero-home {
+    padding: 3.5rem 0 3.5rem;
+  }
+
+  .hero-headline {
+    font-size: clamp(2rem, 6vw, 2.75rem);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    margin-bottom: 1.75rem;
+  }
+
   .hero-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 0.85rem;
   }
 
   .hero-actions .btn {
     width: 100%;
   }
 
+  .hero-trust {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  /* Grids collapse to single column */
   .grid-3,
   .grid-2,
   .grid-4,
   .why-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
+  /* Card Paddings on Mobile - override inline 3rem / 3.5rem */
+  .service-card,
+  div[style*="padding: 3rem"],
+  div[style*="padding: 3.5rem"],
+  div[style*="padding: 2.5rem"],
+  div[style*="padding: 2.25rem"] {
+    padding: 1.5rem !important;
   }
 
   .form-card {
     padding: 1.75rem 1.25rem;
+    border-radius: var(--radius-lg);
   }
 
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .cta-box {
+    padding: 2.5rem 1.5rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .cta-title {
+    font-size: 1.75rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cta-buttons .btn {
+    width: 100%;
+  }
+
+  /* Projects filter buttons */
+  .project-filter-bar {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    gap: 0.5rem;
+  }
+
+  .filter-btn {
+    flex-shrink: 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.825rem;
+  }
+
+  .project-thumb {
+    height: 200px;
+  }
+
+  /* Badges positioning */
   .floating-badge {
     position: static;
     margin-top: 1rem;
+    box-shadow: none;
+  }
+
+  /* Footer on mobile */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+/* Small-Screen Android & Smartphones (under 480px) */
+@media (max-width: 480px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .site-header {
+    height: 64px;
+  }
+
+  .nav-container {
+    height: 64px;
+  }
+
+  .brand-logo img {
+    height: 38px;
+  }
+
+  .brand-title {
+    font-size: 1.1rem;
+  }
+
+  .brand-tagline {
+    font-size: 0.6rem;
+  }
+
+  .hero-headline {
+    font-size: 1.85rem;
+  }
+
+  .section-title {
+    font-size: 1.55rem;
+  }
+
+  .btn-lg {
+    padding: 0.85rem 1.4rem;
+    font-size: 0.95rem;
+  }
+
+  .service-card,
+  .form-card,
+  .contact-info-card,
+  .why-card {
+    padding: 1.25rem !important;
+  }
+
+  .spotlight-title {
+    font-size: 1.55rem;
+  }
+
+  .project-thumb {
+    height: 180px;
+  }
+
+  .form-control {
+    font-size: 16px; /* Prevents iOS auto-zoom on input focus */
+    padding: 0.75rem 0.95rem;
   }
 }
 
