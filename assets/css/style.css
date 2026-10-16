@@ -412,6 +412,10 @@ button, input, textarea, select {
   gap: 1rem;
 }
 
+.mobile-menu-cta {
+  display: none;
+}
+
 /* Mobile Toggle */
 .mobile-toggle {
   display: none;
